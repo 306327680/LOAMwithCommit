@@ -485,7 +485,7 @@ void LaserOdometry::process()
     _pointSearchSurfInd3.resize(surfPointsFlatNum);
     //迭代什么
 
-
+    //包括`特征提取 非线性优化的迭代
     for (size_t iterCount = 0; iterCount < _maxIterations; iterCount++) //_maxIterations=25(defalt)
     {// 到830行
       pcl::PointXYZI pointSel, pointProj, tripod1, tripod2, tripod3;
@@ -861,7 +861,8 @@ void LaserOdometry::process()
         matP = matV.inverse() * matV2;
       }
 
-      if (isDegenerate) {
+      if (isDegenerate)
+      {
         Eigen::Matrix<float,6,1> matX2;
         matX2 = matX;
         matX = matP * matX2;
@@ -896,7 +897,7 @@ void LaserOdometry::process()
   }
 
 
-  // 坐标转换
+  // 坐标转换 // 计算旋转角的累计变化量
   Angle rx, ry, rz;
   accumulateRotation(_transformSum.rot_x,
                      _transformSum.rot_y,
